@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  influxdb:
+    image: influxdb:1.7.3
+    environment:
+      INFLUXDB_DB: metrics
+
+  chronograf:
+    image: chronograf:1.7.7
+    depends_on:
+      - influxdb
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+    ports:
+      - 8888:8888
+
+  grafana:
+    image: grafana/grafana:5.4.3
+    depends_on:
+      - influxdb
+    ports:
+      - 3000:3000
+
+  telegraf:
+    image: telegraf:1.9.4
+    depends_on:
+      - influxdb
+    volumes:
+      - ./docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
+  nginx:
+    image: nginx:1.15.8
+    hostname: nginx
+    depends_on:
+      - php
+    ports:
+      - 8080:80
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./app:/app:ro
+
+  php:
+    build:
+      context: docker/php
+    hostname: php
+    depends_on:
+      - mysql
+    volumes:
+      - ./app:/app
+
+  mysql:
+    image: mysql:5.7.25
+    hostname: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
