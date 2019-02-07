@@ -47,7 +47,7 @@ services:
     depends_on:
       - mysql
     volumes:
-      - ./app:/app
+      - ./app:/app:ro
 
   mysql:
     image: mysql:5.7.25
