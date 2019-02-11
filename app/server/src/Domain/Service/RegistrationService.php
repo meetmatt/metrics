@@ -2,6 +2,7 @@
 
 namespace MeetMatt\Metrics\Server\Domain\Service;
 
+use InvalidArgumentException;
 use MeetMatt\Metrics\Server\Domain\Entity\User;
 use MeetMatt\Metrics\Server\Domain\Repository\UserRepositoryInterface;
 
@@ -30,6 +31,14 @@ class RegistrationService
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param string $username
+     * @param string $password
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return User
+     */
     public function register(string $username, string $password): User
     {
         $user = new User($username, $this->passwordHashingService->hashPassword($password));

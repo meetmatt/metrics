@@ -20,6 +20,7 @@ class TaskListRepository implements TaskListRepositoryInterface
     public function findByUserId(int $userId): TaskListCollection
     {
         $taskLists = new TaskListCollection();
+
         $rows = $this->db->run('SELECT * FROM `list` WHERE `user_id` = ? AND `is_deleted` = 0', $userId);
         foreach ($rows as $row) {
             $taskLists->add(
@@ -42,6 +43,33 @@ class TaskListRepository implements TaskListRepositoryInterface
                 'id' => $taskList->getId(),
                 'user_id' => $taskList->getUserId(),
                 'name' => $taskList->getName(),
+            ]
+        );
+    }
+
+    public function findById(string $id): ?TaskList
+    {
+        $result = $this->db->row('SELECT * FROM `list` WHERE `id` = ? AND `is_deleted` = 0', $id);
+        if (empty($result)) {
+            return null;
+        }
+
+        return new TaskList(
+            $result['id'],
+            $result['user_id'],
+            $result['name']
+        );
+    }
+
+    public function updateIsDeleted(TaskList $taskList): void
+    {
+        $this->db->update(
+            'list',
+            [
+                'is_deleted' => $taskList->isDeleted(),
+            ],
+            [
+                'id' => $taskList->getId(),
             ]
         );
     }

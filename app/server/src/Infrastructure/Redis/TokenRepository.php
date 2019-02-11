@@ -8,7 +8,7 @@ use Redis;
 
 class TokenRepository implements TokenRepositoryInterface
 {
-    const TTL = 60;
+    const TTL = 86400;
 
     /** @var Redis */
     private $redis;

@@ -1,0 +1,69 @@
+POST http://localhost:8080/user
+
+{
+  "username": "party_maker_2000",
+  "password": "beastyboys22"
+}
+
+###
+
+POST http://localhost:8080/login
+
+{
+  "username": "party_maker_2000",
+  "password": "beastyboys22"
+}
+
+###
+
+POST http://localhost:8080/lists
+Authorization: Bearer 550b0ccb-66bf-476e-8927-525f852a4db5
+
+{
+  "name": "New year party 2025"
+}
+
+###
+
+GET http://localhost:8080/lists
+Authorization: Bearer 550b0ccb-66bf-476e-8927-525f852a4db5
+
+###
+
+GET http://localhost:8080/lists/58d8db86-cc65-4593-8d9c-6f4e1ae77b28
+Authorization: Bearer 550b0ccb-66bf-476e-8927-525f852a4db5
+
+###
+
+GET http://localhost:8080/lists/58d8db86-cc65-4593-8d9c-6f4e1ae77b28/tasks
+Authorization: Bearer 550b0ccb-66bf-476e-8927-525f852a4db5
+
+###
+
+POST http://localhost:8080/lists/58d8db86-cc65-4593-8d9c-6f4e1ae77b28/tasks
+Authorization: Bearer 550b0ccb-66bf-476e-8927-525f852a4db5
+
+{
+  "summary": "Champaign: 5 bottles"
+}
+
+###
+
+PATCH http://localhost:8080/lists/58d8db86-cc65-4593-8d9c-6f4e1ae77b28/tasks/287399f9-7a84-4878-9b4f-862c2333d81c
+Authorization: Bearer 550b0ccb-66bf-476e-8927-525f852a4db5
+
+{
+  "is_done": true
+}
+
+###
+
+DELETE http://localhost:8080/lists/58d8db86-cc65-4593-8d9c-6f4e1ae77b28/tasks/287399f9-7a84-4878-9b4f-862c2333d81c
+Authorization: Bearer 550b0ccb-66bf-476e-8927-525f852a4db5
+
+###
+
+DELETE http://localhost:8080/lists/58d8db86-cc65-4593-8d9c-6f4e1ae77b28
+Authorization: Bearer 550b0ccb-66bf-476e-8927-525f852a4db5
+
+###

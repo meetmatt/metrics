@@ -2,6 +2,8 @@
 
 namespace MeetMatt\Metrics\Server\Presentation\Action\User;
 
+use InvalidArgumentException;
+use MeetMatt\Metrics\Server\Domain\Service\Exception\UnauthorizedException;
 use MeetMatt\Metrics\Server\Domain\Service\LoginService;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -24,7 +26,13 @@ class LoginAction extends ActionAbstract
     {
         $body = $this->getJsonBody($request);
 
-        $token = $this->loginService->login($body['username'], $body['password']);
+        try {
+            $token = $this->loginService->login($body['username'], $body['password']);
+        } catch (InvalidArgumentException $exception) {
+            return $this->badRequest($response, $exception);
+        } catch (UnauthorizedException $exception) {
+            return $this->unauthorized($response);
+        }
 
         return $this->withJson($response, ['token' => $token->getId()]);
     }

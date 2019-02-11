@@ -2,25 +2,28 @@
 
 namespace MeetMatt\Metrics\Server\Presentation\Action\TaskList;
 
-use InvalidArgumentException;
+use MeetMatt\Metrics\Server\Domain\Entity\TaskList;
 use MeetMatt\Metrics\Server\Domain\Repository\TokenRepositoryInterface;
-use MeetMatt\Metrics\Server\Domain\Service\TaskListService;
+use MeetMatt\Metrics\Server\Domain\Repository\TaskListRepositoryInterface;
 use MeetMatt\Metrics\Server\Presentation\Action\User\ActionAbstract;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class CreateAction extends ActionAbstract
+class GetAction extends ActionAbstract
 {
     /** @var TokenRepositoryInterface */
     private $tokenRepository;
 
-    /** @var TaskListService */
-    private $taskListService;
+    /** @var TaskListRepositoryInterface */
+    private $taskListRepository;
 
-    public function __construct(TokenRepositoryInterface $tokenRepository, TaskListService $taskListService)
+    public function __construct(
+        TokenRepositoryInterface $tokenRepository,
+        TaskListRepositoryInterface $taskListRepository
+    )
     {
         $this->tokenRepository = $tokenRepository;
-        $this->taskListService = $taskListService;
+        $this->taskListRepository = $taskListRepository;
     }
 
     public function __invoke(
@@ -33,12 +36,10 @@ class CreateAction extends ActionAbstract
         if (null === $userId) {
             return $this->unauthorized($response);
         }
-        $body = $this->getJsonBody($request);
 
-        try {
-            $taskList = $this->taskListService->create($userId, $body['name']);
-        } catch (InvalidArgumentException $exception) {
-            return $this->badRequest($response, $exception);
+        $taskList = $this->taskListRepository->findById($arguments['id']);
+        if ($taskList->getUserId() !== $userId) {
+            return $this->accessDenied($response);
         }
 
         return $this->withJson(
@@ -46,8 +47,7 @@ class CreateAction extends ActionAbstract
             [
                 'id' => $taskList->getId(),
                 'name' => $taskList->getName(),
-            ],
-            201
+            ]
         );
     }
 }

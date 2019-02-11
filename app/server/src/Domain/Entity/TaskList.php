@@ -2,6 +2,8 @@
 
 namespace MeetMatt\Metrics\Server\Domain\Entity;
 
+use InvalidArgumentException;
+
 final class TaskList
 {
     /** @var string */
@@ -16,8 +18,20 @@ final class TaskList
     /** @var bool */
     private $isDeleted;
 
+    /**
+     * @param string $id
+     * @param int    $userId
+     * @param string $name
+     *
+     * @throws InvalidArgumentException
+     */
     public function __construct(string $id, int $userId, string $name)
     {
+        $name = trim($name);
+        if (strlen($name) < 1) {
+            throw new InvalidArgumentException('Task list name must be at least 1 character long');
+        }
+
         $this->id = $id;
         $this->userId = $userId;
         $this->name = $name;
@@ -46,6 +60,6 @@ final class TaskList
 
     public function delete()
     {
-        $this->isDeleted = false;
+        $this->isDeleted = true;
     }
 }

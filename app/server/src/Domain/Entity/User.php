@@ -2,6 +2,7 @@
 
 namespace MeetMatt\Metrics\Server\Domain\Entity;
 
+use InvalidArgumentException;
 use LogicException;
 
 final class User
@@ -15,8 +16,19 @@ final class User
     /** @var string */
     private $password;
 
+    /**
+     * @param string $username
+     * @param string $password
+     *
+     * @throws InvalidArgumentException
+     */
     public function __construct(string $username, string $password)
     {
+        $username = trim($username);
+        if (strlen($username) < 6) {
+            throw new InvalidArgumentException('Username must be at least 6 characters long');
+        }
+
         $this->username = $username;
         $this->password = $password;
     }

@@ -12,50 +12,64 @@
 
 ### ToDo list manager
 
-Functions:
-1. users/tokens:
-   - signup(username, password) -> token
-   - get_token(username, password) -> token
-   - use_token(token, ttl) (internal on each action with token)
-     -> true (it exists and ttl was updated)
-     -> false (it doesn't exist, probably already expired -> get_token) 
-   - get_user(token) -> user (internal function)
-2. lists:
-   - get_many(token) -> list[]
-   - get_one(token, id) -> list
-   - create(token, name) -> id
-   - update(token, id, name)
-   - delete(token, id)
-3. tasks:
-   - get_many(token, list_id) -> task[]
-   - create(token, list_id, summary) -> task
-   - done(token, task_id)
-   - undone(token, task_id)
-   - delete(token, task_id)
-
-### Client
-
-Possible actions:
-- Signup
-- Get lists
+- Registration
+- Login
+- Get all lists
+- Get one list
 - Create list
-- Get list
-- Add task
-- Mark task as done
-- Mark task as undone
-- Delete task
 - Delete list
-- Wait
-- Delete token
-- Get token
+- Get tasks
+- Create task
+- Mark task as done
+- Mark task as not done
+- Delete task
 
-Scenarios:
-- TODO: create a state machine with random (weighted) transitions
-- Generate a thousand of static scenarios from the state machine
-- Store scenarios
-- Load scenario, play scenario
+## TODO
 
-Simulation:
-- Chance of new user
-- Chance of existing user
-- Store user credentials in shared client memory for logins 
+- Refactor actions
+- Validation
+- Exception handling
+- API client (without any client-side validation)
+- API tests
+- Unit tests
+
+## Instrumentation
+
+- Metrics reporting service
+- HTTP response status metrics
+- PSR middleware for HTTP response status metrics
+- Response time metrics
+- PSR middleware for response time metrics
+- Business metrics (total/minute):
+    - registrations
+    - logins
+    - created lists
+    - created tasks
+    - done tasks
+- Infrastructure metrics:
+    - nginx requests/second
+    - nginx connections
+    - mysql queries per second
+    - mysql min/max/avg/perc. operation time
+    - mysql index usage stats
+    - redis operations per second
+    - redis key space size
+    - redis ttl stats
+    - php-fpm active workers
+    - nic traffic
+    - r/w disk ops
+    - memory
+    - cpu
+    
+## Scenarios
+
+1. Increase number of clients.
+2. Decrease/increase wait time between client actions.
+3. Decrease/increase number of php-fpm workers.
+4. Decrease/increase nginx connections.
+5. Drop/add mysql index.
+6. Flush redis.
+7. Decrease curl connection timeout on client.
+8. Decrease curl operation timeout on client.
+9. Add sleep in server index.php.
+ 

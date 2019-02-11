@@ -2,6 +2,7 @@
 
 namespace MeetMatt\Metrics\Server\Domain\Service;
 
+use InvalidArgumentException;
 use MeetMatt\Metrics\Server\Domain\Entity\Token;
 use MeetMatt\Metrics\Server\Domain\Repository\TokenRepositoryInterface;
 use MeetMatt\Metrics\Server\Domain\Repository\UserRepositoryInterface;
@@ -40,12 +41,18 @@ class LoginService
      * @param string $username
      * @param string $password
      *
+     * @throws InvalidArgumentException
      * @throws UnauthorizedException
      *
      * @return Token
      */
     public function login(string $username, string $password): Token
     {
+        $username = trim($username);
+        if (strlen($username) < 6) {
+            throw new InvalidArgumentException('Username must be at least 6 characters long');
+        }
+
         $user = $this->userRepository->findByUsername($username);
         $knownHash = $user !== null ? $user->getPassword() : 'this is not a valid pass hash';
 
