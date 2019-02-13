@@ -2,9 +2,9 @@
 
 namespace MeetMatt\Metrics\Server\Infrastructure\Mysql;
 
-use MeetMatt\Metrics\Server\Domain\Entity\TaskList;
-use MeetMatt\Metrics\Server\Domain\Entity\TaskListCollection;
-use MeetMatt\Metrics\Server\Domain\Repository\TaskListRepositoryInterface;
+use MeetMatt\Metrics\Server\Domain\TaskList\TaskList;
+use MeetMatt\Metrics\Server\Domain\TaskList\TaskListCollection;
+use MeetMatt\Metrics\Server\Domain\TaskList\TaskListRepositoryInterface;
 use ParagonIE\EasyDB\EasyDB;
 
 class TaskListRepository implements TaskListRepositoryInterface

@@ -2,18 +2,17 @@
 
 namespace MeetMatt\Metrics\Server\Infrastructure\Redis;
 
-use MeetMatt\Metrics\Server\Domain\Entity\Token;
-use MeetMatt\Metrics\Server\Domain\Repository\TokenRepositoryInterface;
-use Redis;
+use MeetMatt\Metrics\Server\Domain\User\Token;
+use MeetMatt\Metrics\Server\Domain\User\TokenRepositoryInterface;
 
 class TokenRepository implements TokenRepositoryInterface
 {
     const TTL = 86400;
 
-    /** @var Redis */
+    /** @var RedisConnectionInterface */
     private $redis;
 
-    public function __construct(Redis $redis)
+    public function __construct(RedisConnectionInterface $redis)
     {
         $this->redis = $redis;
     }

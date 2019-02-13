@@ -3,7 +3,7 @@
 namespace MeetMatt\Metrics\Server\Infrastructure\Cryptography;
 
 use InvalidArgumentException;
-use MeetMatt\Metrics\Server\Domain\Service\PasswordHashingServiceInterface;
+use MeetMatt\Metrics\Server\Domain\User\PasswordHashingServiceInterface;
 
 class PasswordHashingService implements PasswordHashingServiceInterface
 {

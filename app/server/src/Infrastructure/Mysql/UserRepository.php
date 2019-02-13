@@ -2,8 +2,8 @@
 
 namespace MeetMatt\Metrics\Server\Infrastructure\Mysql;
 
-use MeetMatt\Metrics\Server\Domain\Entity\User;
-use MeetMatt\Metrics\Server\Domain\Repository\UserRepositoryInterface;
+use MeetMatt\Metrics\Server\Domain\User\User;
+use MeetMatt\Metrics\Server\Domain\User\UserRepositoryInterface;
 use ParagonIE\EasyDB\EasyDB;
 
 class UserRepository implements UserRepositoryInterface

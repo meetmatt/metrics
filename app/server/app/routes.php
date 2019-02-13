@@ -1,15 +1,15 @@
 <?php
 
-use MeetMatt\Metrics\Server\Presentation\Action\TaskList\CreateTaskAction;
-use MeetMatt\Metrics\Server\Presentation\Action\TaskList\CreateAction;
-use MeetMatt\Metrics\Server\Presentation\Action\TaskList\DeleteAction;
-use MeetMatt\Metrics\Server\Presentation\Action\TaskList\DeleteTaskAction;
-use MeetMatt\Metrics\Server\Presentation\Action\TaskList\GetAction;
-use MeetMatt\Metrics\Server\Presentation\Action\TaskList\GetManyAction;
-use MeetMatt\Metrics\Server\Presentation\Action\TaskList\GetTasksAction;
-use MeetMatt\Metrics\Server\Presentation\Action\TaskList\MarkTaskAction;
-use MeetMatt\Metrics\Server\Presentation\Action\User\LoginAction;
-use MeetMatt\Metrics\Server\Presentation\Action\User\RegisterAction;
+use MeetMatt\Metrics\Server\Presentation\Http\TaskList\CreateTaskAction;
+use MeetMatt\Metrics\Server\Presentation\Http\TaskList\CreateAction;
+use MeetMatt\Metrics\Server\Presentation\Http\TaskList\DeleteAction;
+use MeetMatt\Metrics\Server\Presentation\Http\TaskList\DeleteTaskAction;
+use MeetMatt\Metrics\Server\Presentation\Http\TaskList\GetAction;
+use MeetMatt\Metrics\Server\Presentation\Http\TaskList\GetManyAction;
+use MeetMatt\Metrics\Server\Presentation\Http\TaskList\GetTasksAction;
+use MeetMatt\Metrics\Server\Presentation\Http\TaskList\MarkTaskAction;
+use MeetMatt\Metrics\Server\Presentation\Http\User\LoginAction;
+use MeetMatt\Metrics\Server\Presentation\Http\User\RegisterAction;
 
 return [
     [

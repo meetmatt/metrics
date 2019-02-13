@@ -26,12 +26,11 @@
 
 ## TODO
 
-- Refactor actions
-- Validation
-- Exception handling
 - API client (without any client-side validation)
 - API tests
 - Unit tests
+- Instrumentation
+- Client simulation
 
 ## Instrumentation
 
@@ -61,9 +60,9 @@
     - memory
     - cpu
     
-## Scenarios
+## Degradation scenarios
 
-1. Increase number of clients.
+1. Decrease/increase number of clients.
 2. Decrease/increase wait time between client actions.
 3. Decrease/increase number of php-fpm workers.
 4. Decrease/increase nginx connections.

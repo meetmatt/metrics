@@ -1,18 +1,12 @@
 <?php
 
-use MeetMatt\Metrics\Server\Application\Container\ServiceProvider;
-use Slim\App;
-use Slim\Container;
-
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$container = new Container(require_once __DIR__ . '/../app/config.php');
-$container->register(new ServiceProvider());
+$container = new \Slim\Container(require_once __DIR__ . '/../app/config.php');
 
-$slim = new App($container);
-foreach (require_once __DIR__ . '/../app/routes.php' as $route) {
-    $slim->map([$route['method']], $route['pattern'], $route['action']);
+$services = require_once __DIR__ . '/../app/services.php';
+foreach ($services as $service) {
+    $container->register($service);
 }
 
-/** @noinspection PhpUnhandledExceptionInspection */
-$slim->run();
+$container[\Slim\App::class]->run();
