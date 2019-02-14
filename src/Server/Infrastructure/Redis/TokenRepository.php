@@ -7,7 +7,7 @@ use MeetMatt\Metrics\Server\Domain\User\TokenRepositoryInterface;
 
 class TokenRepository implements TokenRepositoryInterface
 {
-    const TTL = 86400;
+    const TTL = 60;
 
     /** @var RedisConnectionInterface */
     private $redis;
