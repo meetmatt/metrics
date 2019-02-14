@@ -26,11 +26,8 @@
 
 ## TODO
 
-- API client (without any client-side validation)
-- API tests
-- Unit tests
 - Instrumentation
-- Client simulation
+- Dashboard
 
 ## Instrumentation
 
