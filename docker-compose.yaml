@@ -61,3 +61,11 @@ services:
 
   redis:
     image: redis:5.0.3
+    container_name: metrics_redis
+    hostname: redis
+
+  client:
+    image: php:7.3.1
+    command: php /app/app/client.php
+    volumes:
+      - ./:/app:ro

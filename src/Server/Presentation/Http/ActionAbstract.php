@@ -41,7 +41,7 @@ abstract class ActionAbstract
             throw new InvalidArgumentException('Request json body is required');
         }
         foreach ($requiredFields as $field) {
-            if (empty($body[$field])) {
+            if (!isset($body[$field])) {
                 throw new InvalidArgumentException($field . ' is required');
             }
         }
