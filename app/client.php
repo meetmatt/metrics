@@ -3,14 +3,11 @@
 use MeetMatt\Metrics\Client\TokenExpiredException;
 use MeetMatt\Metrics\Client\Api;
 
-require_once __DIR__ . '/../src/Client/TokenExpiredException.php';
-require_once __DIR__ . '/../src/Client/Response.php';
-require_once __DIR__ . '/../src/Client/Curl.php';
-require_once __DIR__ . '/../src/Client/Api.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 function choose($probability)
 {
-    return mt_rand(1, (int)round(1 / $probability)) === 1;
+    return random_int(1, (int)round(1 / $probability)) === 1;
 }
 
 function writeLog($message)
@@ -20,11 +17,11 @@ function writeLog($message)
 
 function randomString()
 {
-    return md5(microtime(true) . mt_rand(1000, 9999));
+    return md5(microtime(true) . random_int(1000, 9999));
 }
 
 $randomString = randomString();
-$username = 'user_' . substr($randomString, mt_rand(0, 15), 6);
+$username = 'user_' . substr($randomString, random_int(0, 15), 6);
 $password = substr($randomString, 15, 16);
 
 $isRegistered = false;
@@ -35,7 +32,7 @@ $taskId = null;
 $api = new Api('http://nginx');
 
 while (true) {
-    usleep(mt_rand(1, 5) * 100000);
+    usleep(random_int(1, 5) * 100000);
 
     if (choose(0.01)) {
         writeLog('Forgot token');
@@ -74,7 +71,7 @@ while (true) {
                 if (count($lists) === 1) {
                     $listId = $lists[0]['id'];
                 } else {
-                    $listId = $lists[mt_rand(0, count($lists) - 1)]['id'];
+                    $listId = $lists[random_int(0, count($lists) - 1)]['id'];
                 }
                 writeLog('Chose from ' . count($lists) . ' lists');
             }
@@ -96,7 +93,7 @@ while (true) {
                 if (count($tasks) === 1) {
                     $taskId = $tasks[0]['id'];
                 } else {
-                    $taskId = $tasks[mt_rand(0, count($tasks) - 1)]['id'];
+                    $taskId = $tasks[random_int(0, count($tasks) - 1)]['id'];
                 }
                 writeLog('Chose from ' . count($tasks) . ' tasks');
             }

@@ -92,19 +92,31 @@ class InfrastructureServiceProvider implements ServiceProviderInterface
         };
 
         $pimple[UserRepositoryInterface::class] = function (Container $container) {
-            return new UserRepository($container[EasyDB::class]);
+            return new UserRepository(
+                $container[EasyDB::class],
+                $container[MetricsInterface::class]
+            );
         };
 
         $pimple[TokenRepositoryInterface::class] = function (Container $container) {
-            return new TokenRepository($container[RedisConnectionInterface::class]);
+            return new TokenRepository(
+                $container[RedisConnectionInterface::class],
+                $container[MetricsInterface::class]
+            );
         };
 
         $pimple[TaskListRepositoryInterface::class] = function (Container $container) {
-            return new TaskListRepository($container[EasyDB::class]);
+            return new TaskListRepository(
+                $container[EasyDB::class],
+                $container[MetricsInterface::class]
+            );
         };
 
         $pimple[TaskRepositoryInterface::class] = function (Container $container) {
-            return new TaskRepository($container[EasyDB::class]);
+            return new TaskRepository(
+                $container[EasyDB::class],
+                $container[MetricsInterface::class]
+            );
         };
     }
 }

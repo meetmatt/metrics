@@ -32,14 +32,14 @@ final class Task
     public function __construct(string $id, string $listId, string $summary, bool $isDone = false)
     {
         $summary = trim($summary);
-        if (strlen($summary) < 1) {
+        if ('' === $summary) {
             throw new InvalidArgumentException('Task summary must be at least 1 character long');
         }
 
-        $this->id = $id;
-        $this->listId = $listId;
-        $this->summary = $summary;
-        $this->isDone = $isDone;
+        $this->id        = $id;
+        $this->listId    = $listId;
+        $this->summary   = $summary;
+        $this->isDone    = $isDone;
         $this->isDeleted = false;
     }
 

@@ -24,19 +24,19 @@ class RemoteUdpBatchedDogStatsd extends DogStatsd
         parent::__construct($config);
     }
 
-    public function report($udp_message)
+    public function report($udp_message): void
     {
         $this->buffer[] = $udp_message;
         $this->bufferLength++;
         if ($this->bufferLength > $this->maxBufferLength) {
-            $this->flush_buffer();
+            $this->flushBuffer();
         }
     }
 
-    public function flush_buffer()
+    public function flushBuffer(): void
     {
-        $this->flush(join("\n", $this->buffer));
-        $this->buffer = [];
+        $this->flush(implode("\n", $this->buffer));
+        $this->buffer       = [];
         $this->bufferLength = 0;
     }
 

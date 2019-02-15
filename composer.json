@@ -4,7 +4,6 @@
   "license": "proprietary",
   "minimum-stability": "stable",
   "config": {
-    "classmap-authoritative": true,
     "optimize-autoloader": true,
     "sort-packages": true
   },
@@ -16,9 +15,11 @@
   },
   "require": {
     "php": ">=7.3",
+    "ext-curl": "*",
     "ext-json": "*",
     "ext-pdo": "*",
     "ext-redis": "*",
+    "ext-sockets": "*",
     "datadog/php-datadogstatsd": "^1.3",
     "guzzlehttp/guzzle": "^6.3",
     "paragonie/easydb": "^2.8",

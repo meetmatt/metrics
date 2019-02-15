@@ -46,6 +46,17 @@ interface MetricsInterface
      **/
     public function microtiming(string $metric, $timeSeconds, array $tags = null): void;
 
+	/**
+	 * Wrapper to measure the microtiming of a callable.
+	 *
+	 * @param string   $metric
+	 * @param callable $callable
+	 * @param array    $tags
+	 *
+	 * @return mixed
+	 */
+    public function timer(string $metric, callable $callable, array $tags = null);
+
     /**
      * Gauge
      *

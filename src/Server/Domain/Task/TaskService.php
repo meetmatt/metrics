@@ -63,7 +63,7 @@ class TaskService
      *
      * @return TaskCollection
      */
-    public function getTasks(int $userId, string $taskListId)
+    public function getTasks(int $userId, string $taskListId): TaskCollection
     {
         $taskList = $this->taskListService->getUserTaskList($userId, $taskListId);
 
@@ -79,7 +79,7 @@ class TaskService
      * @throws AccessDeniedException
      * @throws NotFoundException
      */
-    public function mark(int $userId, string $taskListId, string $taskId, bool $isDone)
+    public function mark(int $userId, string $taskListId, string $taskId, bool $isDone): void
     {
         $task = $this->get($userId, $taskListId, $taskId);
 

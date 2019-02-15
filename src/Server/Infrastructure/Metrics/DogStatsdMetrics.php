@@ -13,15 +13,15 @@ class DogStatsdMetrics implements MetricsInterface
     public function __construct(string $host, int $port = 8125, array $tags = [])
     {
         $this->dogStatsd = new RemoteUdpBatchedDogStatsd([
-            'host' => $host,
-            'port' => $port,
+            'host'        => $host,
+            'port'        => $port,
             'global_tags' => $tags,
         ]);
     }
 
     public function flush(): void
     {
-        $this->dogStatsd->flush_buffer();
+        $this->dogStatsd->flushBuffer();
     }
 
     public function increment(string $metric, array $tags = null, int $value = 1): void
@@ -42,6 +42,16 @@ class DogStatsdMetrics implements MetricsInterface
     public function microtiming(string $metric, $timeSeconds, array $tags = null): void
     {
         $this->dogStatsd->microtiming($metric, $timeSeconds * 1000, 1.0, $tags);
+    }
+
+    public function timer(string $metric, callable $callable, array $tags = null)
+    {
+        $startTime = microtime(true);
+        $result    = $callable();
+        $endTime   = microtime(true);
+        $this->microtiming($metric, $endTime - $startTime, $tags);
+
+        return $result;
     }
 
     public function gauge(string $metric, $value, array $tags = null): void
