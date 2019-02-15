@@ -3,7 +3,7 @@
 ## Usage
 
 - Install dependencies: `make`
-- Be aware that composer is configured to ignore file system changes. You must run `make` each time you create or change classes.
+- Be aware that composer is configured to ignore file system changes. You must run `make` each time you create, move, rename or delete files in `src`.
 - Start the containers: `docker-compose up -d`
 - Watch the client using the app: `docker-compose logs -f client`
 - Open Grafana and add dashboards: http://localhost:3000
