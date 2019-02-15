@@ -17,7 +17,7 @@ POST http://localhost:8080/login
 ###
 
 POST http://localhost:8080/lists
-Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
+Authorization: Bearer f2cbe3d5-fcfa-4ed3-811b-03f62d36f23e
 
 {
   "name": "New year party 2025"
@@ -26,22 +26,22 @@ Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
 ###
 
 GET http://localhost:8080/lists
-Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
+Authorization: Bearer f2cbe3d5-fcfa-4ed3-811b-03f62d36f23e
 
 ###
 
-GET http://localhost:8080/lists/194aa176-6158-4b6a-8782-87c7b43a34f9
-Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
+GET http://localhost:8080/lists/1422e834-beca-401d-8f48-981b7ed1d024
+Authorization: Bearer 53a1045b-3dee-4d92-a9e2-49adc01cd01c
 
 ###
 
-GET http://localhost:8080/lists/194aa176-6158-4b6a-8782-87c7b43a34f9/tasks
-Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
+GET http://localhost:8080/lists/1422e834-beca-401d-8f48-981b7ed1d024/tasks
+Authorization: Bearer 53a1045b-3dee-4d92-a9e2-49adc01cd01c
 
 ###
 
-POST http://localhost:8080/lists/194aa176-6158-4b6a-8782-87c7b43a34f9/tasks
-Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
+POST http://localhost:8080/lists/1422e834-beca-401d-8f48-981b7ed1d024/tasks
+Authorization: Bearer 53a1045b-3dee-4d92-a9e2-49adc01cd01c
 
 {
   "summary": "Champaign: 5 bottles"
@@ -49,8 +49,8 @@ Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
 
 ###
 
-PATCH http://localhost:8080/lists/194aa176-6158-4b6a-8782-87c7b43a34f9/tasks/908aac6e-39a2-4ab7-916f-02f2067c99e2
-Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
+PATCH http://localhost:8080/lists/1422e834-beca-401d-8f48-981b7ed1d024/tasks/303d2634-2d28-47da-b89c-875eb192d9f1
+Authorization: Bearer 53a1045b-3dee-4d92-a9e2-49adc01cd01c
 
 {
   "is_done": true
@@ -59,11 +59,11 @@ Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
 ###
 
 DELETE http://localhost:8080/lists/58d8db86-cc65-4593-8d9c-6f4e1ae77b28/tasks/287399f9-7a84-4878-9b4f-862c2333d81c
-Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
+Authorization: Bearer 53a1045b-3dee-4d92-a9e2-49adc01cd01c
 
 ###
 
 DELETE http://localhost:8080/lists/58d8db86-cc65-4593-8d9c-6f4e1ae77b28
-Authorization: Bearer 7c089979-d51e-4081-8569-8f448af9f6c6
+Authorization: Bearer 53a1045b-3dee-4d92-a9e2-49adc01cd01c
 
 ###

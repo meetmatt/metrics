@@ -3,6 +3,7 @@
 namespace MeetMatt\Metrics\Server\Infrastructure\Container;
 
 use MeetMatt\Metrics\Server\Domain\Identity\RandomIdGeneratorInterface;
+use MeetMatt\Metrics\Server\Domain\Metrics\MetricsInterface;
 use MeetMatt\Metrics\Server\Domain\Task\TaskRepositoryInterface;
 use MeetMatt\Metrics\Server\Domain\TaskList\TaskListRepositoryInterface;
 use MeetMatt\Metrics\Server\Domain\User\PasswordHashingServiceInterface;
@@ -12,6 +13,7 @@ use MeetMatt\Metrics\Server\Infrastructure\Cryptography\PasswordHashingService;
 use MeetMatt\Metrics\Server\Infrastructure\Cryptography\RandomIdGenerator;
 use MeetMatt\Metrics\Server\Infrastructure\Http\Middleware\ErrorResponseMiddleware;
 use MeetMatt\Metrics\Server\Infrastructure\Http\Middleware\TokenAuthMiddleware;
+use MeetMatt\Metrics\Server\Infrastructure\Metrics\DogStatsdMetrics;
 use MeetMatt\Metrics\Server\Infrastructure\Mysql\TaskListRepository;
 use MeetMatt\Metrics\Server\Infrastructure\Mysql\TaskRepository;
 use MeetMatt\Metrics\Server\Infrastructure\Mysql\UserRepository;
@@ -60,6 +62,16 @@ class InfrastructureServiceProvider implements ServiceProviderInterface
             return new LazyRedisConnection(
                 $container['settings']['redis']['host'],
                 $container['settings']['redis']['port'] ?? 6379
+            );
+        };
+
+        $pimple[MetricsInterface::class] = function (Container $container) {
+            $settings = $container['settings']['statsd'];
+
+            return new DogStatsdMetrics(
+                $settings['host'],
+                $settings['port'] ?? 8125,
+                $settings['tags'] ?? []
             );
         };
 
