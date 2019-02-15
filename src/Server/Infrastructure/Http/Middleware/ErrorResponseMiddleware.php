@@ -9,6 +9,7 @@ use MeetMatt\Metrics\Server\Domain\Exception\NotFoundException;
 use MeetMatt\Metrics\Server\Domain\Exception\UnauthorizedException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 class ErrorResponseMiddleware
 {
@@ -30,7 +31,9 @@ class ErrorResponseMiddleware
             return $response->withStatus(403, $exception->getMessage());
         } catch (NotFoundException $exception) {
             return $response->withStatus(404, $exception->getMessage());
-        }
+        } catch (Throwable $exception) {
+        	return $response->withStatus(500, $exception->getMessage());
+		}
 
         return $response;
     }
