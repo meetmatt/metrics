@@ -6,6 +6,26 @@ composer-install:
 up:
 	docker-compose up -d
 
+.PHONY: ps
+ps:
+	docker-compose ps
+
+.PHONY: influxdb
+influxdb:
+	docker-compose exec influxdb influx -database metrics
+
+.PHONY: retention
+retention:
+	docker-compose exec influxdb bash -c 'influx -database metrics < /influxdb/retention.sql'
+
+.PHONY: downsample
+downsample:
+	docker-compose exec influxdb bash -c 'influx -database metrics < /influxdb/downsample.sql'
+
+.PHONY: restart
+restart:
+	docker-compose restart
+
 .PHONY: down
 down:
 	docker-compose down

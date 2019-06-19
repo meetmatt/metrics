@@ -5,6 +5,8 @@ services:
     image: influxdb:1.7.3
     container_name: metrics_influxdb
     hostname: influxdb
+    volumes:
+      - ./docker/influxdb:/influxdb
     environment:
       INFLUXDB_DB: metrics
 
@@ -21,6 +23,8 @@ services:
     image: grafana/grafana:5.4.3
     container_name: metrics_grafana
     hostname: grafana
+    volumes:
+      - ./docker/data/grafana:/var/lib/grafana
     ports:
       - 3000:3000
 
