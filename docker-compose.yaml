@@ -8,14 +8,14 @@ services:
     environment:
       INFLUXDB_DB: metrics
 
-  chronograf:
-    image: chronograf:1.7.7
-    container_name: metrics_chronograf
-    hostname: chronograf
-    environment:
-      INFLUXDB_URL: http://influxdb:8086
-    ports:
-      - 8888:8888
+#  chronograf:
+#    image: chronograf:1.7.7
+#    container_name: metrics_chronograf
+#    hostname: chronograf
+#    environment:
+#      INFLUXDB_URL: http://influxdb:8086
+#    ports:
+#      - 8888:8888
 
   grafana:
     image: grafana/grafana:5.4.3
