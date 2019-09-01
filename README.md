@@ -6,8 +6,13 @@
 - Be aware that composer is configured to ignore file system changes. You must run `make` each time you create, move, rename or delete files in `src`.
 - Start the containers: `docker-compose up -d`
 - Watch the client using the app: `docker-compose logs -f client`
-- Open Grafana and add dashboards: http://localhost:3000
-- Scale client application to 10 instances and watch the changes on the dashboard: `docker-compose up -d --scale client=10`
+- configure [downsampling & retention](https://docs.influxdata.com/influxdb/v1.7/guides/downsampling_and_retention/) strategies for InfluxDB:
+`make configure-influxdb`
+- Open Grafana http://localhost:3000 (credentials = admin/admin)
+- add data source (Configuration -> Data Sources -> Add Data Source): URL = http://influxdb:8086, db = `metrics`
+- add dashboard (New Dashboard -> Import Dashboard -> Upload .json file) from `docker/grafana/dashboards`
+- Scale client application to 10, 20, 40 instances and watch the changes on the dashboard: `make scale-up clients=10`
+(`make scale-down` for downgrading the load back to 1 client again)
 - Add more instrumentation
 
 ## Application
@@ -27,10 +32,6 @@ See `test/support/todo.http`.
 - Mark task as done
 - Mark task as not done
 - Delete task
-
-## TODO
-
-- Add dashboard to source code.
 
 ## TODO: Instrumentation
 
