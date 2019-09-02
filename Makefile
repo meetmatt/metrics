@@ -11,10 +11,6 @@ ps:
 influxdb:
 	docker-compose exec influxdb influx -database metrics
 
-configure-influxdb:
-	docker-compose exec influxdb bash -c 'influx -database metrics < /influxdb/retention.sql'
-	docker-compose exec influxdb bash -c 'influx -database metrics < /influxdb/downsampling.sql'
-
 restart:
 	docker-compose restart
 

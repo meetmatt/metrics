@@ -6,7 +6,8 @@ services:
     container_name: metrics_influxdb
     hostname: influxdb
     volumes:
-      - ./docker/influxdb:/influxdb
+      - ./docker/influxdb:/docker-entrypoint-initdb.d
+      - ./docker/data/influxdb:/var/lib/influxdb
     environment:
       INFLUXDB_DB: metrics
 
