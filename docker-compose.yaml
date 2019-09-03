@@ -33,6 +33,8 @@ services:
     image: telegraf:1.9.4
     container_name: metrics_telegraf
     hostname: telegraf
+    ports:
+      - 8125:8125
     volumes:
       - ./docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
 
