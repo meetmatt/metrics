@@ -25,7 +25,7 @@ services:
     container_name: metrics_grafana
     hostname: grafana
     volumes:
-      - ./docker/data/grafana:/var/lib/grafana
+      - grafana-volume:/var/lib/grafana
     ports:
       - 3000:3000
 
@@ -33,8 +33,6 @@ services:
     image: telegraf:1.9.4
     container_name: metrics_telegraf
     hostname: telegraf
-    ports:
-      - 8125:8125
     volumes:
       - ./docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
 
@@ -71,8 +69,11 @@ services:
     container_name: metrics_redis
     hostname: redis
 
-  client:
-    image: php:7.3.1
-    command: php /app/app/client.php
-    volumes:
-      - ./:/app:ro
+  #client:
+   # image: php:7.3.1
+    #command: php /app/app/client.php
+    #volumes:
+     # - ./:/app:ro
+
+volumes:
+  grafana-volume:
