@@ -60,7 +60,7 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."duration14d_precision_1m".:MEASUREMENT
+    INTO "metrics"."duration_14d_precision_1m".:MEASUREMENT
     FROM metrics."duration_7d_precision_10s"./.*/
     GROUP BY time(1m),*
 END;
@@ -77,7 +77,7 @@ BEGIN
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
     INTO "metrics"."duration_90d_precision_10m".:MEASUREMENT
-    FROM metrics."duration14d_precision_1m"./.*/
+    FROM metrics."duration_14d_precision_1m"./.*/
     GROUP BY time(10m),*
 END;
  
