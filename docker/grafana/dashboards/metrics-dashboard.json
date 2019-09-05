@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 3,
   "links": [],
   "panels": [
     {
@@ -66,14 +66,14 @@
             },
             {
               "params": [
-                "null"
+                "0"
               ],
               "type": "fill"
             }
           ],
           "measurement": "api.response.time",
           "orderByTime": "ASC",
-          "policy": "autogen",
+          "policy": "default",
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
@@ -189,10 +189,10 @@
               "type": "time"
             }
           ],
-          "measurement": "api.calls",
+          "measurement": "api.calls.count",
           "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT non_negative_derivative(sum(\"value\"), 1s) FROM \"autogen\".\"api.calls\" WHERE $timeFilter GROUP BY time(1s) fill(none)",
+          "policy": "default",
+          "query": "SELECT non_negative_derivative(sum(\"value\"), 1s) FROM \"duration_3d_precision_1s\".\"api.calls\" WHERE $timeFilter GROUP BY time(1s) fill(none)",
           "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
@@ -212,7 +212,7 @@
                 "params": [
                   "1s"
                 ],
-                "type": "non_negative_derivative"
+                "type": "derivative"
               }
             ]
           ],
@@ -342,7 +342,7 @@
           ],
           "measurement": "api.response.time",
           "orderByTime": "ASC",
-          "policy": "autogen",
+          "policy": "default",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -459,10 +459,10 @@
               "type": "fill"
             }
           ],
-          "measurement": "api.calls",
+          "measurement": "api.calls.count",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT non_negative_derivative(sum(\"value\"), 1s) FROM \"autogen\".\"api.calls\" WHERE $timeFilter GROUP BY time(1s) fill(none)\n",
+          "query": "SELECT non_negative_derivative(sum(\"value\"), 1s) FROM \"duration_3d_precision_1s\".\"api.calls\" WHERE $timeFilter GROUP BY time(1s) fill(none)\n",
           "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
@@ -476,13 +476,7 @@
               },
               {
                 "params": [],
-                "type": "mean"
-              },
-              {
-                "params": [
-                  "1s"
-                ],
-                "type": "non_negative_derivative"
+                "type": "sum"
               }
             ]
           ],
@@ -570,7 +564,7 @@
           ],
           "measurement": "api.repository.call",
           "orderByTime": "ASC",
-          "policy": "autogen",
+          "policy": "default",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -677,5 +671,5 @@
   "timezone": "",
   "title": "API metrics",
   "uid": "-F0GQuuik",
-  "version": 5
+  "version": 4
 }

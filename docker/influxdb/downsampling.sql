@@ -9,8 +9,8 @@ BEGIN
         percentile(value, 90) as percentile_90,
         percentile(value, 95) as percentile_95,
         stddev(value) as stddev
-    INTO "metrics"."10s".:MEASUREMENT
-    FROM metrics."1s"./.*/
+    INTO "metrics"."duration_7d_precision_10s".:MEASUREMENT
+    FROM metrics."duration_3d_precision_1s"./.*/
     WHERE metric_type = 'counter'
     GROUP BY time(10s),*
 END;
@@ -26,8 +26,8 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."10s".:MEASUREMENT
-    FROM metrics."1s"./.*/
+    INTO "metrics"."duration_7d_precision_10s".:MEASUREMENT
+    FROM metrics."duration_3d_precision_1s"./.*/
     WHERE metric_type = 'timing'
     GROUP BY time(10s),*
 END;
@@ -43,8 +43,8 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."10s".:MEASUREMENT
-    FROM metrics."1s"./.*/
+    INTO "metrics"."duration_7d_precision_10s".:MEASUREMENT
+    FROM metrics."duration_3d_precision_1s"./.*/
     WHERE metric_type = 'histogram'
     GROUP BY time(10s),*
 END;
@@ -60,8 +60,8 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."1m".:MEASUREMENT
-    FROM metrics."10s"./.*/
+    INTO "metrics"."duration_14d_precision_1m".:MEASUREMENT
+    FROM metrics."duration_7d_precision_10s"./.*/
     GROUP BY time(1m),*
 END;
  
@@ -76,8 +76,8 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."10m".:MEASUREMENT
-    FROM metrics."1m"./.*/
+    INTO "metrics"."duration_90d_precision_10m".:MEASUREMENT
+    FROM metrics."duration_14d_precision_1m"./.*/
     GROUP BY time(10m),*
 END;
  
@@ -92,8 +92,8 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."1h".:MEASUREMENT
-    FROM metrics."10m"./.*/
+    INTO "metrics"."duration_1y_precision_1h".:MEASUREMENT
+    FROM metrics."duration_90d_precision_10m"./.*/
     GROUP BY time(1h),*
 END;
  
@@ -108,7 +108,7 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."1d".:MEASUREMENT
-    FROM metrics."1h"./.*/
+    INTO "metrics"."duration_inf_precision_1d".:MEASUREMENT
+    FROM metrics."duration_1y_precision_1h"./.*/
     GROUP BY time(1d),*
 END;

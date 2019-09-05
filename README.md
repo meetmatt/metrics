@@ -6,10 +6,15 @@
 - Be aware that composer is configured to ignore file system changes. You must run `make` each time you create, move, rename or delete files in `src`.
 - Start the containers: `docker-compose up -d`
 - Watch the client using the app: `docker-compose logs -f client`
-- Open Grafana and add dashboards: http://localhost:3000
-- [Sample dashboard](./docker/grafana/dashboards/API%20metrics-1550251129042.json)
-- Scale client application to 10 instances and watch the changes on the dashboard: `docker-compose up -d --scale client=10`
-- Add more instrumentation
+- Open Grafana http://localhost:3000 (credentials = admin/admin)
+- add data source (Configuration -> Data Sources -> Add Data Source): URL = http://influxdb:8086, db = `metrics`
+- add dashboard (New Dashboard -> Import Dashboard -> Upload .json file) from `docker/grafana/dashboards`
+- Scale client application to 10, 20, 40 instances and watch the changes on the dashboard: `make scale-up clients=10`
+(`make scale-down` for downgrading the load back to 1 client again)
+- watch all the containers live with `ctop`:
+```bash
+docker run -it --name ctop --rm -v /var/run/docker.sock:/var/run/docker.sock wrfly/ctop:latest
+```
 
 ## Application
 
