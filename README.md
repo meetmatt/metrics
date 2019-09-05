@@ -7,6 +7,7 @@
 - Start the containers: `docker-compose up -d`
 - Watch the client using the app: `docker-compose logs -f client`
 - Open Grafana and add dashboards: http://localhost:3000
+- [Sample dashboard](./docker/grafana/dashboards/API%20metrics-1550251129042.json)
 - Scale client application to 10 instances and watch the changes on the dashboard: `docker-compose up -d --scale client=10`
 - Add more instrumentation
 
@@ -27,10 +28,6 @@ See `test/support/todo.http`.
 - Mark task as done
 - Mark task as not done
 - Delete task
-
-## TODO
-
-- Add dashboard to source code.
 
 ## TODO: Instrumentation
 
