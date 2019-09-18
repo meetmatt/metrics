@@ -7,8 +7,8 @@
 - Start the containers: `docker-compose up -d`
 - Watch the client using the app: `docker-compose logs -f client`
 - Open Grafana http://localhost:3000 (credentials = admin/admin)
-- add data source (Configuration -> Data Sources -> Add Data Source): URL = http://influxdb:8086, db = `metrics`
-- add dashboard (New Dashboard -> Import Dashboard -> Upload .json file) from `docker/grafana/dashboards`
+- Add data source (Configuration -> Data Sources -> Add Data Source): URL = http://influxdb:8086, db = `metrics`
+- Add dashboard (New Dashboard -> Import Dashboard -> Upload .json file) from `docker/grafana/dashboards`
 - Scale client application to 10, 20, 40 instances and watch the changes on the dashboard: `make scale-up clients=10`
 (`make scale-down` for downgrading the load back to 1 client again)
 - watch all the containers live with `ctop`:
@@ -56,4 +56,60 @@ See `test/support/todo.http`.
 7. Decrease curl connection timeout on client.
 8. Decrease curl operation timeout on client.
 9. Add sleep in server index.php.
- 
+
+### HA infrastructure
+
+```
+
+      Client       ...      Client
+      /   \                 /   \
+     /     \               /     \   
+    /       \             /       \
+Telegraf  Telegraf ...  Telegraf  Telegraf
+    \          \         /         /
+     \          \       /         /
+      \______    \     /    _____/
+             \    \   /    /
+              \    \ /    /
+          Ingress Load Balancer
+                  / \
+                 /   \
+                /     \
+             Relay   Relay
+              |  \   /  | 
+              |   \ /   |
+              |    X    |
+              |   / \   |
+              |  /   \  |
+              | /     \ |
+            Influx    Influx
+              | \     / |
+              |  \   /  |
+              |   \ /   |
+              |    X    |
+              |   / \   |
+              |  /   \  |
+              | /     \ |
+           Query Load Balancer
+                   |
+                   |
+                   |
+                Grafana
+```
+
+Grafana provisioning configuration
+
+```yaml
+apiVersion: 1
+
+datasources:
+  - name: Metrics
+    type: influxdb
+    access: proxy
+    database: metrics
+    user: influxdb
+    password: influxdb
+    url: http://query-load-balancer:80
+    jsonData:
+      httpMode: GET
+```
