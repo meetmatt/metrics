@@ -57,7 +57,9 @@ See `test/support/todo.http`.
 8. Decrease curl operation timeout on client.
 9. Add sleep in server index.php.
 
-### HA infrastructure
+## HA infrastructure
+
+### System diagram
 
 ```
 +-----------------------------+   +-----------------------------+
@@ -119,7 +121,12 @@ See `test/support/todo.http`.
                   +--------------------------+
 ```
 
-Grafana provisioning configuration
+
+### Configuration
+
+#### Grafana
+
+Grafana provisioning configuration:
 
 ```yaml
 apiVersion: 1
