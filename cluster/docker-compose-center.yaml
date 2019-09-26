@@ -1,0 +1,71 @@
+version: '3.7'
+
+services:
+  ingress_load_balancer:
+    container_name: metrics-cluster.center.ingress_load_balancer
+    image: nginx:1.17.4-alpine
+    volumes:
+      - ./docker/nginx/ingress.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - metrics-cluster.wan
+      - metrics-cluster.center
+
+  relay_left:
+    container_name: metrics-cluster.center.relay_left
+    image: vptech/influxdb-relay:2.0.0
+    volumes:
+      - ./docker/relay/relay.conf:/etc/influxdb-relay/influxdb-relay.conf:ro
+    networks:
+      - metrics-cluster.center
+
+  relay_right:
+    container_name: metrics-cluster.center.relay_right
+    image: vptech/influxdb-relay:2.0.0
+    volumes:
+      - ./docker/relay/relay.conf:/etc/influxdb-relay/influxdb-relay.conf:ro
+    networks:
+      - metrics-cluster.center
+
+  influxdb_left:
+    container_name: metrics-cluster.center.influxdb_left
+    image: influxdb:1.7.8-alpine
+    volumes:
+      - ../docker/influxdb:/docker-entrypoint-initdb.d
+      - ./docker/data/influxdb_left:/var/lib/inf  luxdb
+    environment:
+      INFLUXDB_DB: metrics
+    networks:
+      - metrics-cluster.center
+
+  influxdb_right:
+    container_name: metrics-cluster.center.influxdb_right
+    image: influxdb:1.7.8-alpine
+    volumes:
+      - ../docker/influxdb:/docker-entrypoint-initdb.d
+      - ./docker/data/influxdb_right:/var/lib/influxdb
+    environment:
+      INFLUXDB_DB: metrics
+    networks:
+      - metrics-cluster.center
+
+  query_load_balancer:
+    container_name: metrics-cluster.center.query_load_balancer
+    image: nginx:1.17.4-alpine
+    volumes:
+      - ./docker/nginx/query.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - metrics-cluster.center
+
+  grafana:
+    container_name: metrics-cluster.center.grafana
+    image: grafana/grafana:6.3.6
+    volumes:
+      - ./docker/data/grafana:/var/lib/grafana
+    ports:
+      - 9000:3000
+
+networks:
+  metrics-cluster.wan:
+    external: true
+  metrics-cluster.center:
+    driver: bridge
