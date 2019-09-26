@@ -40,7 +40,7 @@ services:
     image: influxdb:1.7.8-alpine
     volumes:
       - ../docker/influxdb:/docker-entrypoint-initdb.d
-      - ./docker/data/influxdb_left:/var/lib/inf  luxdb
+      - ./docker/data/influxdb_left:/var/lib/influxdb
     environment:
       INFLUXDB_DB: metrics
     networks:
