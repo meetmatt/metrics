@@ -5,7 +5,10 @@ services:
     container_name: metrics-cluster.center.ingress_load_balancer
     image: nginx:1.17.4-alpine
     volumes:
-      - ./docker/nginx/ingress.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./docker/nginx/ingress.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - relay_left
+      - relay_right
     networks:
       - metrics-cluster.wan
       - metrics-cluster.center
@@ -17,6 +20,9 @@ services:
       - ./docker/relay/relay.conf:/etc/influxdb-relay/influxdb-relay.conf:ro
     networks:
       - metrics-cluster.center
+    depends_on:
+      - influxdb_left
+      - influxdb_right
 
   relay_right:
     container_name: metrics-cluster.center.relay_right
@@ -25,6 +31,9 @@ services:
       - ./docker/relay/relay.conf:/etc/influxdb-relay/influxdb-relay.conf:ro
     networks:
       - metrics-cluster.center
+    depends_on:
+      - influxdb_left
+      - influxdb_right
 
   influxdb_left:
     container_name: metrics-cluster.center.influxdb_left
@@ -52,9 +61,12 @@ services:
     container_name: metrics-cluster.center.query_load_balancer
     image: nginx:1.17.4-alpine
     volumes:
-      - ./docker/nginx/query.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./docker/nginx/query.conf:/etc/nginx/nginx.conf:ro
     networks:
       - metrics-cluster.center
+    depends_on:
+      - influxdb_left
+      - influxdb_right
 
   grafana:
     container_name: metrics-cluster.center.grafana
@@ -63,6 +75,8 @@ services:
       - ./docker/data/grafana:/var/lib/grafana
     ports:
       - 9000:3000
+    depends_on:
+      - query_load_balancer
 
 networks:
   metrics-cluster.wan:
