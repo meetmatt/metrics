@@ -1,0 +1,188 @@
+version: '3.7'
+
+services:
+
+## West
+
+  application_west:
+    container_name: metrics-cluster.west.application
+    image: metrics-cluster-application:latest
+    build:
+      context: docker/application
+    volumes:
+      - ../:/app:ro
+    networks:
+      - metrics-cluster.west
+
+  load_balancer_west:
+    container_name: metrics-cluster.west.load_balancer
+    image: nginx:1.17.4-alpine
+    volumes:
+      - ./docker/nginx/telegraf_west.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - metrics-cluster.west
+    expose:
+      - 8125/udp
+    depends_on:
+      - telegraf_main_west
+      - telegraf_backup_west
+
+  telegraf_main_west:
+    container_name: metrics-cluster.west.telegraf_main
+    image: telegraf:1.12.2-alpine
+    volumes:
+      - ./docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    networks:
+      - metrics-cluster.west
+      - metrics-cluster.wan
+    depends_on:
+      - ingress_load_balancer
+
+  telegraf_backup_west:
+    container_name: metrics-cluster.west.telegraf_backup
+    image: telegraf:1.12.2-alpine
+    volumes:
+      - ./docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    networks:
+      - metrics-cluster.west
+      - metrics-cluster.wan
+    depends_on:
+      - ingress_load_balancer
+
+## East
+
+  application_east:
+    container_name: metrics-cluster.east.application
+    image: metrics-cluster-application:latest
+    build:
+      context: docker/application
+    volumes:
+      - ../:/app:ro
+    networks:
+      - metrics-cluster.east
+
+  load_balancer_east:
+    container_name: metrics-cluster.east.load_balancer
+    image: nginx:1.17.4-alpine
+    volumes:
+      - ./docker/nginx/telegraf_east.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - metrics-cluster.east
+    expose:
+      - 8125/udp
+    depends_on:
+      - telegraf_main_east
+      - telegraf_backup_east
+
+  telegraf_main_east:
+    container_name: metrics-cluster.east.telegraf_main
+    image: telegraf:1.12.2-alpine
+    volumes:
+      - ./docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    networks:
+      - metrics-cluster.east
+      - metrics-cluster.wan
+    depends_on:
+      - ingress_load_balancer
+
+  telegraf_backup_east:
+    container_name: metrics-cluster.east.telegraf_backup
+    image: telegraf:1.12.2-alpine
+    volumes:
+      - ./docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    networks:
+      - metrics-cluster.east
+      - metrics-cluster.wan
+    depends_on:
+      - ingress_load_balancer
+
+## Center
+
+  ingress_load_balancer:
+    container_name: metrics-cluster.center.ingress_load_balancer
+    image: nginx:1.17.4-alpine
+    volumes:
+      - ./docker/nginx/ingress.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - metrics-cluster.wan
+      - metrics-cluster.center
+    expose:
+      - 8086
+    depends_on:
+      - relay_left
+      - relay_right
+
+  relay_left:
+    container_name: metrics-cluster.center.relay_left
+    image: vptech/influxdb-relay:2.0.0
+    volumes:
+      - ./docker/relay/relay.conf:/etc/influxdb-relay/influxdb-relay.conf:ro
+    networks:
+      - metrics-cluster.center
+    depends_on:
+      - influxdb_left
+      - influxdb_right
+
+  relay_right:
+    container_name: metrics-cluster.center.relay_right
+    image: vptech/influxdb-relay:2.0.0
+    volumes:
+      - ./docker/relay/relay.conf:/etc/influxdb-relay/influxdb-relay.conf:ro
+    networks:
+      - metrics-cluster.center
+    depends_on:
+      - influxdb_left
+      - influxdb_right
+
+  influxdb_left:
+    container_name: metrics-cluster.center.influxdb_left
+    image: influxdb:1.7.8-alpine
+    volumes:
+      - ../docker/influxdb:/docker-entrypoint-initdb.d
+      - ./docker/data/influxdb_left:/var/lib/influxdb
+    environment:
+      INFLUXDB_DB: metrics
+    networks:
+      - metrics-cluster.center
+
+  influxdb_right:
+    container_name: metrics-cluster.center.influxdb_right
+    image: influxdb:1.7.8-alpine
+    volumes:
+      - ../docker/influxdb:/docker-entrypoint-initdb.d
+      - ./docker/data/influxdb_right:/var/lib/influxdb
+    environment:
+      INFLUXDB_DB: metrics
+    networks:
+      - metrics-cluster.center
+
+  query_load_balancer:
+    container_name: metrics-cluster.center.query_load_balancer
+    image: nginx:1.17.4-alpine
+    volumes:
+      - ./docker/nginx/query.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - metrics-cluster.center
+    depends_on:
+      - influxdb_left
+      - influxdb_right
+
+  grafana:
+    container_name: metrics-cluster.center.grafana
+    image: grafana/grafana:6.3.6
+    volumes:
+      - ./docker/data/grafana:/var/lib/grafana
+    ports:
+      - 9000:3000
+    depends_on:
+      - query_load_balancer
+
+networks:
+  metrics-cluster.wan:
+    driver: bridge
+  metrics-cluster.east:
+    driver: bridge
+  metrics-cluster.west:
+    driver: bridge
+  metrics-cluster.center:
+    driver: bridge
