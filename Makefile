@@ -33,5 +33,11 @@ cluster-up:
 cluster-down:
 	@docker-compose -f cluster/docker-compose.yaml down
 
+cluster-scale-up:
+    @docker-compose -f cluster/docker-compose.yaml up -d --scale client=${clients}
+
+cluster-scale-down:
+    @docker-compose -f cluster/docker-compose.yaml --scale client=1
+
 docker-ps:
 	@docker ps | awk '{print $$NF}' | tail -n+2
