@@ -11,6 +11,7 @@ services:
       context: docker/application
     volumes:
       - ../:/app:ro
+    command: /app/app/cluster_client.php west metrics-cluster.west.load_balancer 100000
     networks:
       - metrics-cluster.west
 
@@ -58,6 +59,7 @@ services:
       context: docker/application
     volumes:
       - ../:/app:ro
+    command: /app/app/cluster_client.php east metrics-cluster.east.load_balancer 100000
     networks:
       - metrics-cluster.east
 
@@ -176,6 +178,8 @@ services:
       - 9000:3000
     depends_on:
       - query_load_balancer
+    networks:
+      - metrics-cluster.center
 
 networks:
   metrics-cluster.wan:

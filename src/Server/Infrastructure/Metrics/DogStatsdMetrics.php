@@ -2,12 +2,11 @@
 
 namespace MeetMatt\Metrics\Server\Infrastructure\Metrics;
 
-use DataDog\BatchedDogStatsd;
 use MeetMatt\Metrics\Server\Domain\Metrics\MetricsInterface;
 
 class DogStatsdMetrics implements MetricsInterface
 {
-    /** @var BatchedDogStatsd */
+    /** @var RemoteUdpBatchedDogStatsd */
     private $dogStatsd;
 
     public function __construct(string $host, int $port = 8125, array $tags = [])
