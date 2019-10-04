@@ -5,7 +5,6 @@ services:
 ## West
 
   application_west:
-    container_name: metrics-cluster.west.application
     image: metrics-cluster-application:latest
     build:
       context: docker/application
@@ -53,7 +52,6 @@ services:
 ## East
 
   application_east:
-    container_name: metrics-cluster.east.application
     image: metrics-cluster-application:latest
     build:
       context: docker/application

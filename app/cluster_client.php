@@ -26,6 +26,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $metrics = new DogStatsdMetrics($telegraf, 8125, ['application' => $tag]);
 
+usleep(mt_rand(1000, 1000000));
+
 $i = 0;
 while (true) {
     $metrics->increment('meetmatt.client.loop.count');
