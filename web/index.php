@@ -32,8 +32,7 @@ $timerEnd = microtime(true);
 
 /** @var MetricsInterface $metrics */
 $metrics = $container[MetricsInterface::class];
-$metrics->increment('api.calls.count');
-$metrics->increment('api.response_status.count', ['code' => $statusCode]);
-$metrics->microtiming('api.response.time', $timerEnd - $timerStart);
+$metrics->increment('request_count');
+$metrics->timing('response_time', $timerEnd - $timerStart, ['code' => $statusCode]);
 $metrics->flush();
 
