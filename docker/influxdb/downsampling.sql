@@ -15,6 +15,23 @@ BEGIN
     GROUP BY time(10s),*
 END;
 
+CREATE CONTINUOUS QUERY "downsample_gauge_1s_to_10s" ON "metrics"
+BEGIN
+    SELECT
+        sum(value) as sum,
+        count(value) as count,
+        mean(value) as mean,
+        min(value) as lower,
+        max(value) as upper,
+        percentile(value, 90) as percentile_90,
+        percentile(value, 95) as percentile_95,
+        stddev(value) as stddev
+    INTO "metrics"."duration_7d_precision_10s".:MEASUREMENT
+    FROM metrics."duration_3d_precision_1s"./.*/
+    WHERE metric_type = 'gauge'
+    GROUP BY time(10s),*
+END;
+
 CREATE CONTINUOUS QUERY "downsample_timing_1s_to_10s" ON "metrics"
 BEGIN
     SELECT
