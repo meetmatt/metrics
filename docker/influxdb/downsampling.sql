@@ -1,4 +1,4 @@
-CREATE CONTINUOUS QUERY "downsample_counter_1s_to_10s" ON "metrics"
+CREATE CONTINUOUS QUERY "downsample_counter" ON "metrics"
 BEGIN
     SELECT
         sum(value) as sum,
@@ -9,13 +9,13 @@ BEGIN
         percentile(value, 90) as percentile_90,
         percentile(value, 95) as percentile_95,
         stddev(value) as stddev
-    INTO "metrics"."duration_7d_precision_10s".:MEASUREMENT
-    FROM metrics."duration_3d_precision_1s"./.*/
+    INTO "metrics"."10s".:MEASUREMENT
+    FROM metrics."1s"./.*/
     WHERE metric_type = 'counter'
     GROUP BY time(10s),*
 END;
 
-CREATE CONTINUOUS QUERY "downsample_gauge_1s_to_10s" ON "metrics"
+CREATE CONTINUOUS QUERY "downsample_gauge" ON "metrics"
 BEGIN
     SELECT
         sum(value) as sum,
@@ -26,13 +26,13 @@ BEGIN
         percentile(value, 90) as percentile_90,
         percentile(value, 95) as percentile_95,
         stddev(value) as stddev
-    INTO "metrics"."duration_7d_precision_10s".:MEASUREMENT
-    FROM metrics."duration_3d_precision_1s"./.*/
+    INTO "metrics"."10s".:MEASUREMENT
+    FROM metrics."1s"./.*/
     WHERE metric_type = 'gauge'
     GROUP BY time(10s),*
 END;
 
-CREATE CONTINUOUS QUERY "downsample_timing_1s_to_10s" ON "metrics"
+CREATE CONTINUOUS QUERY "downsample_timing" ON "metrics"
 BEGIN
     SELECT
         sum(sum) as sum,
@@ -43,13 +43,13 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."duration_7d_precision_10s".:MEASUREMENT
-    FROM metrics."duration_3d_precision_1s"./.*/
+    INTO "metrics"."10s".:MEASUREMENT
+    FROM metrics."1s"./.*/
     WHERE metric_type = 'timing'
     GROUP BY time(10s),*
 END;
 
-CREATE CONTINUOUS QUERY "downsample_histogram_1s_to_10s" ON "metrics"
+CREATE CONTINUOUS QUERY "downsample_histogram" ON "metrics"
 BEGIN
     SELECT
         sum(sum) as sum,
@@ -60,8 +60,8 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."duration_7d_precision_10s".:MEASUREMENT
-    FROM metrics."duration_3d_precision_1s"./.*/
+    INTO "metrics"."10s".:MEASUREMENT
+    FROM metrics."1s"./.*/
     WHERE metric_type = 'histogram'
     GROUP BY time(10s),*
 END;
@@ -77,8 +77,8 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."duration_14d_precision_1m".:MEASUREMENT
-    FROM metrics."duration_7d_precision_10s"./.*/
+    INTO "metrics"."1m".:MEASUREMENT
+    FROM metrics."10s"./.*/
     GROUP BY time(1m),*
 END;
  
@@ -93,8 +93,8 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."duration_90d_precision_10m".:MEASUREMENT
-    FROM metrics."duration_14d_precision_1m"./.*/
+    INTO "metrics"."10m".:MEASUREMENT
+    FROM metrics."1m"./.*/
     GROUP BY time(10m),*
 END;
  
@@ -109,8 +109,8 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."duration_1y_precision_1h".:MEASUREMENT
-    FROM metrics."duration_90d_precision_10m"./.*/
+    INTO "metrics"."1h".:MEASUREMENT
+    FROM metrics."10m"./.*/
     GROUP BY time(1h),*
 END;
  
@@ -125,7 +125,7 @@ BEGIN
         mean(percentile_90) as percentile_90,
         mean(percentile_95) as percentile_95,
         mean(stddev) as stddev
-    INTO "metrics"."duration_inf_precision_1d".:MEASUREMENT
-    FROM metrics."duration_1y_precision_1h"./.*/
+    INTO "metrics"."1d".:MEASUREMENT
+    FROM metrics."1h"./.*/
     GROUP BY time(1d),*
 END;
