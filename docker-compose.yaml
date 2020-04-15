@@ -2,7 +2,7 @@ version: '3'
 
 services:
   influxdb:
-    image: influxdb:1.7.3
+    image: influxdb:1.7.10
     container_name: metrics_influxdb
     hostname: influxdb
     volumes:
@@ -21,7 +21,7 @@ services:
 #      - 8888:8888
 
   grafana:
-    image: grafana/grafana:5.4.3
+    image: grafana/grafana:6.7.2
     container_name: metrics_grafana
     hostname: grafana
     volumes:
@@ -30,7 +30,7 @@ services:
       - 3000:3000
 
   telegraf:
-    image: telegraf:1.9.4
+    image: telegraf:1.12.6
     container_name: metrics_telegraf
     hostname: telegraf
     volumes:
